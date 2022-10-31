@@ -1,0 +1,2 @@
+class GenericParser:
+    PATTERN = ''
