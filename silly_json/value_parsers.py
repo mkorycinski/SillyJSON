@@ -25,8 +25,8 @@ class IntegerParser(GenericParser):
 
 class FloatParser(GenericParser):
     exponent = r'[eE][-+]?[0-9]+'
-    int_pattern = IntegerParser.pattern[1:-1]
-    pattern = fr'^({int_pattern}.{int_pattern}({exponent})?)$|^({int_pattern}{exponent})$'
+    num_pattern = '[0-9]*'
+    pattern = fr'^({num_pattern}.{num_pattern}({exponent})?)$|^({num_pattern}{exponent})$'
     caster = float
 
 
