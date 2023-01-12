@@ -14,6 +14,8 @@ class TestIntegerParser(unittest.TestCase):
     @foreach(
         ('123', 123),
         ('1', 1),
+        ('0', 0),
+        ('-1', -1)
     )
     def test_integers(self, test_str, expected):
         self.assertEqual(self.parser(test_str), expected)

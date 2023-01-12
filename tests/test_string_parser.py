@@ -12,8 +12,8 @@ class TestStringParser(unittest.TestCase):
         self.parser = StringParser()
 
     @foreach(
-        ('Jan Kowalski', 'Jan Kowalski'),
-        ('Abecadlo', 'Abecadlo')
+        ('"Jan Kowalski"', 'Jan Kowalski'),
+        ('"Abecadlo"', 'Abecadlo')
     )
     def test_proper(self, test_str, expected):
         self.assertEqual(self.parser(test_str), expected)
