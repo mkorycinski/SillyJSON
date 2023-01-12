@@ -1,4 +1,5 @@
 import re
+from typing import Optional, Tuple
 
 from silly_json.errors import NotExpectedType
 
@@ -10,12 +11,12 @@ class GenericParser:
     def __init__(self):
         self.pattern = re.compile(fr'^{self.pattern}$')
 
-    def __call__(self, input_str: str):
+    def __call__(self, input_str: str, position: Optional[Tuple[int, int]] = None):
         match = re.match(self.pattern, input_str)
         if match:
             return self.caster(match.group())
         else:
-            raise NotExpectedType
+            raise NotExpectedType(value=input_str, position=position)
 
 
 class IntegerParser(GenericParser):
@@ -86,6 +87,6 @@ class ValueParser:
         for par in self.parsers:
             try:
                 return par(input_str)
-            except NotExpectedType:
+            except NotExpectedType(value=input_str):
                 pass
-        raise NotExpectedType
+        raise NotExpectedType(value=input_str)
