@@ -63,8 +63,8 @@ class NullParser(GenericParser):
 
 class ValueParser:
     parsers = [
-        IntegerParser,
         FloatParser,
+        IntegerParser,
         BoolParser,
         NullParser,
         StringParser
