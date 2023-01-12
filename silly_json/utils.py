@@ -28,7 +28,6 @@ def object_splitter(input_str: str) -> list[str]:
     i = 0
     while i < len(inp):
         elem = inp[i]
-        # print(i, elem)
 
         # Check whether an element represents one of these:
         # string -> "
@@ -45,7 +44,7 @@ def object_splitter(input_str: str) -> list[str]:
             object_begin = object_begin_match.group()
             # get the closing character -> ", }, ]
             object_end = _OBJECT_BOUNDARY_MAPPING[object_begin]
-            # print(object_begin, object_end)
+
             # see if the element is not closed within itself
             # e.g. object with one k:v pair, string without comma inside
             if re.match(f'^{object_begin}.*{object_end}$', elem):
@@ -54,16 +53,13 @@ def object_splitter(input_str: str) -> list[str]:
                 continue
             else:
                 record = []
-                # print(f'{i}: {inp[i:]}')
+
                 # start iterating from element onwards
                 # to reach element having closing char
                 for j, ne in enumerate(inp[i:]):
-                    # print(f'j: {j}')
-                    # print(f'i+j: {i + j}')
                     record.append(ne)
                     # break when we reach it
                     if ne[-1] == object_end:
-                        # print(j, ne)
                         break
                 # rejoin object / string
                 output.append(','.join(record))
@@ -71,13 +67,3 @@ def object_splitter(input_str: str) -> list[str]:
                 # the one having closing char
                 i += j + 1
     return output
-            # print(f'rewind i: {i}')
-
-
-if __name__ == '__main__':
-    test1 = '[1, 0.001, true, false, null, "ja,cek", "jacek"]'
-    test2 = '[1, 0.001, true, false, null, "ja,cek", "jacek", {"foo: "bar"}, {"foo: "bar", "foo: "b,ar"}]'
-    test3 = '{"foo: "bar", "foo: "b,ar"}'
-    print(object_splitter(input_str=test1))
-    print(object_splitter(input_str=test2))
-    print(object_splitter(input_str=test3))
