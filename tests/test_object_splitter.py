@@ -21,6 +21,10 @@ class TestObjectSplitter(unittest.TestCase):
         (
             '{"foo: "bar", "foo: "b,ar"}',
             ['"foo: "bar"', '"foo: "b,ar"']
+        ),
+        (
+            '{"foo": "bar", "ilosc": 1, "waga": 0.001, "lubie": false}',
+            ['"foo": "bar"', '"ilosc": 1', '"waga": 0.001', '"lubie": false']
         )
     )
     def test_object_splitter(self, input_str, expected):
