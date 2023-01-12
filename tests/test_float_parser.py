@@ -16,7 +16,9 @@ class TestFloatParser(unittest.TestCase):
         ('123.22', 123.22),
         ('1.22', 1.22),
         ('1e-3', 0.001),
-        ('0.001', 0.001)
+        ('0.001', 0.001),
+        ('-0.001', -0.001),
+        ('-1e-3', -0.001)
     )
     def test_proper(self, test_str, expected):
         self.assertEqual(self.parser(test_str), expected)
