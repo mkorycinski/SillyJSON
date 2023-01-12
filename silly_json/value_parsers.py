@@ -1,5 +1,5 @@
 import re
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
 
 from silly_json.errors import NotExpectedType
 
@@ -9,9 +9,29 @@ class GenericParser:
     caster = str
 
     def __init__(self):
+        """
+        Generic parser class allowing to build
+        value parser with given `pattern`.
+
+        The pattern shall not contain `^` and `$`
+        as these are added in the constructor while
+        compiling the pattern.
+        """
         self.pattern = re.compile(fr'^{self.pattern}$')
 
-    def __call__(self, input_str: str, position: Optional[Tuple[int, int]] = None):
+    def __call__(self, input_str: str, position: Optional[Tuple[int, int]] = None) -> Any:
+        """
+        Method parsing a single value. Global position
+        of the string can be provided to create more informative
+        error messages.
+
+        Args:
+            input_str: Input str to parse
+            position: A global position of the string.
+
+        Returns:
+            A parsed value cast to native Python object.
+        """
         match = re.match(self.pattern, input_str)
         if match:
             return self.caster(match.group())
