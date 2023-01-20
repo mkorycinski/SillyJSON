@@ -23,6 +23,7 @@ JSON4 = """
     }
 }
 """
+JSON5 = '{"a": [[1, 2, 3], [3, 1, 2]], "b": {"foo": {"bar": "foo"}}}'
 
 
 @expand
@@ -31,7 +32,7 @@ class TestJsonParser(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.parser = JSONParser()
 
-    @foreach(JSON2, JSON3, JSON4)
+    @foreach(JSON2, JSON3, JSON4, JSON5)
     def test_json_parser_on_strings_with_objects(self, input_str):
         expected = json.loads(input_str)
         parsed = self.parser(input_str=input_str)
