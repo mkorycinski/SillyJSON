@@ -27,7 +27,7 @@ def split_string_on_first(s: str, split_char: str) -> List[str]:
     return [s[:split_char_pos], s[split_char_pos + 1:]]
 
 
-def rejoin_element(arr: list, object_end: str) -> (int, str):
+def rejoin_element(arr: list, object_start: str, object_end: str) -> (int, str):
     """
     Iterates over an array `arr` to reach
     an element ending with an `object_end`
@@ -45,13 +45,22 @@ def rejoin_element(arr: list, object_end: str) -> (int, str):
         a comma.
     """
     record = []
-
+    new_openings = 0
     # start iterating from element onwards
     # to reach element having closing char
     for j, ne in enumerate(arr):
         record.append(ne)
+        # We have to detect multi-nested objects
+        # They will be processed recursively
+        # but if we approach here the end of the nested
+        # element and not the one we want to rejoin
+        # we fail miserably.
+        if object_start in ne:
+            new_openings += ne.count(object_start)
+        if object_end in ne:
+            new_openings -= ne.count(object_end)
         # break when we reach it
-        if ne[-1] == object_end:
+        if ne[-1] == object_end and new_openings <= 0:
             break
     return j, ','.join(record)
 
@@ -102,7 +111,9 @@ def object_splitter(input_str: str) -> list[str]:
                 # char so it can be rejoined
                 if value_first_char in _OBJECT_BOUNDARY_MAPPING.keys():
                     j, rejoined = rejoin_element(
-                        inp[i:], object_end=_OBJECT_BOUNDARY_MAPPING[value_first_char]
+                        inp[i:],
+                        object_start=value_first_char,
+                        object_end=_OBJECT_BOUNDARY_MAPPING[value_first_char]
                     )
                     output.append(rejoined)
                     i += j + 1
@@ -120,7 +131,11 @@ def object_splitter(input_str: str) -> list[str]:
                 i += 1
                 continue
             else:
-                j, rejoined = rejoin_element(arr=inp[i:], object_end=object_end)
+                j, rejoined = rejoin_element(
+                    arr=inp[i:],
+                    object_start=object_begin,
+                    object_end=object_end
+                )
                 # rejoin object / string
                 output.append(rejoined)
                 # rewind i index to the next element after
