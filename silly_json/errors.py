@@ -1,6 +1,5 @@
 class NotExpectedType(Exception):
-    def __init__(self, value: str, position=None):
-        self.position = position
+    def __init__(self, value: str):
         self.value = value
         self.msg = f'Not expected value: {self.value} encountered. JSON is malformed.'
 
