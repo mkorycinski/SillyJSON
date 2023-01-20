@@ -36,7 +36,7 @@ class GenericParser:
         if match:
             return self.caster(match.group())
         else:
-            raise NotExpectedType(value=input_str, position=position)
+            raise NotExpectedType(value=input_str)
 
 
 class IntegerParser(GenericParser):
@@ -107,6 +107,6 @@ class ValueParser:
         for par in self.parsers:
             try:
                 return par(input_str)
-            except NotExpectedType(value=input_str):
+            except NotExpectedType:
                 pass
         raise NotExpectedType(value=input_str)
